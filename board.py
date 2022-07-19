@@ -23,15 +23,18 @@ class Board:
             string += f"{str(rows)}\n"
         return string
 
-    def move(self, player: str, x: int, y: int) -> bool:
+    def get_board(self):
+        return self.__board
+
+    def move(self, x: int, y: int) -> bool:
         """
             move the player to the valid position
             @returns true if the move was valid; false other wise
         """
         if " " != self.__board[x][y] or not (0 <= x <= 2) or not (0 <= y <= 2) or self.move_counter > 9:
             return False
+        self.__board[x][y] = self.__player1 if self.move_counter % 2 == 0 else self.__player2
         self.move_counter += 1
-        self.__board[x][y] = player
         return True
 
     def get_players(self):
