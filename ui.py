@@ -1,7 +1,8 @@
 import sys
 
 import pygame as pg
-import board
+from board import Board
+from ai import AI
 
 
 class UI:
@@ -10,7 +11,7 @@ class UI:
     player_X = "X"
     player_O = "O"
 
-    def __init__(self, game_board: board.Board):
+    def __init__(self, game_board: Board):
         pg.font.init()
         pg.init()
         self.font = pg.font.SysFont(None, 200)
@@ -20,6 +21,7 @@ class UI:
         self.window = pg.display.set_mode((UI.WINDOW_WIDTH, UI.WINDOW_HEIGHT))
         pg.display.set_caption("Tic Tac Toe")
         self.board = game_board
+        self.ai = AI(game_board)
         self.isWinner = None
 
     def draw_board(self):
@@ -80,37 +82,41 @@ class UI:
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
-            if event.type == pg.MOUSEBUTTONUP and not self.isWinner:
+            if event.type == pg.MOUSEBUTTONUP and not self.isWinner and self.board.move_counter % 2 != 0:
                 self.find_click(pg.mouse.get_pos())
 
     def check_winner(self):
-        winner = self.board.check_win(UI.player_X)
+        winner = self.board.check_win()
         if winner == 1:
             self.isWinner = UI.player_X
         if winner == 0:
             self.isWinner = "Draw"
-        if self.board.check_win(UI.player_O) == 1:
+        if self.board.check_win() == -1:
             self.isWinner = UI.player_O
 
     def update_window(self):
-        if not self.isWinner:
-            self.draw_board()
-            pg.display.update()
+        self.draw_board()
         if self.isWinner is not None:
             winner_tage = self.winner_font.render('Its a draw' if self.isWinner == "Draw" else f'{self.isWinner} is '
                                                                                                f'the Winner', True,
                                                   (200, 2, 200))
             self.window.blit(winner_tage, (UI.WINDOW_WIDTH / 2 - 105, UI.WINDOW_HEIGHT / 2))
-            pg.display.update()
+        pg.display.update()
+
+    def ai_move(self):
+
+        if self.board.move_counter % 2 == 0 and self.isWinner is None:
+            self.ai.best_move()
 
 
 def main():
-    window = UI(board.Board())
+    window = UI(Board())
+    window.update_window()
     while True:
         window.check_event()
+        window.check_winner()
+        window.ai_move()
         window.update_window()
-        if window.isWinner is None:
-            window.check_winner()
 
 
 if __name__ == '__main__':
