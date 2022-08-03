@@ -59,6 +59,16 @@ So, to maximize or minimize out game. We assign negative number to the end state
 
         return best_score
 ```
+# Improvements to work on 
+-  ### GUI and the Game
+   * The Game for now only allow the user to play once. Additional features can be added to make the GUI more user friendly
+      * This can be done by adding a restart/ play again button 
+      * Adding different game mode such as Single player or multiplayer
+      * In Single player mode we can let the user choose if they want to go first or the AI should go first.
+- ### Improve Minimax Algorithm
+   * for now the Minimax alogrithm is a bit inefficient. 
+   * We can make efficient by incentivising the algorithm to prefer a move that lead to the optimal solution is least number of moves. For that we can the **depth** it on and return values according to that 
+   * We can also use alpha-beta pruning to prune moves that have already been discovered. 
                
     
 
