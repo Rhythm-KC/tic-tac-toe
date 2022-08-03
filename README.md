@@ -3,7 +3,7 @@
 - Here we are using python as our language and pygame module for a GUI.
 
 # Structure 
-    ### board.py
+   ### board.py
       The board.py file contians a Board class.
         * This class internalizing a tic-tac-toe board as a 3 * 3 list 
         * The class also keeps track of number of vaild moves, players in the board 
